@@ -70,7 +70,7 @@ The experiments consists of the following steps. When asked to fill in informati
    > ##### Challenge 1.1
    > Identify the ARP and Ping packets captured by Wireshark. Briefly explain the flow of the ARP and Ping packets that have been sent and received as an effect of the ping-command:
    > ```
-   >
+   > The router with the ip address 10.0.0.1 sends a broadcast request with its mac address and ip address asking for the mac address of the interface with ip 10.0.0.2. The destination mac address is set to all 1's. The host replies with another arp message with its own ip address (10.0.0.2) and MAC address that the router uses to send ping messages. 
    >
    >
    >
@@ -111,7 +111,9 @@ The experiments consists of the following steps. When asked to fill in informati
     > ##### Challenge 1.2
     > Identify the DHCP packets by using packet capture, and briefly explain the exchange of DHCP packets. What IPv4 address has been assigned to "Node-2"?
     > ```
-    >
+    > At first client sends a DHCP discover message with source ip 0.0.0.0 and destination ip 255.255.255.255 (broadcast) and gets the ip address 10.0.0.5 back from the DHCP server as a DHCPOFFER message. Afterwards, host-2 requests the new ip address from the DHCP server with a DHCPREQUEST message and gets a DHCPACK message back. Interface eth0 of host-2 now has the ip address 10.0.0.5
+    
+    Node-2 sends a request with source ip address 0.0.0.0 to the destination ip address 255.255.255.255 (broadcast) to get an ip address. The DHCP server (router-2) replies with the ip address 10.0.0.4 in the YOUR IP ADDRESS field (this is also the address used as destination address). 
     >
     >
     >
@@ -178,7 +180,7 @@ We now have a node on the network which acts as an IPv6 router. Next step is to 
     > ##### Challenge 1.3
     > What IPv6 addresses are configured for the interface prior to autoconfiguration?
     > ```
-    >
+    > inet6 link local: fe80::24ed:6fff:fe0b:f2d/64
     >
     >
     > ```
@@ -209,15 +211,15 @@ We now have a node on the network which acts as an IPv6 router. Next step is to 
     > ##### Challenge 1.4
     > What IPv6 addresses are configured for eth0?
     > ```
-    >
-    >
+    > inet6 global: 2001:16d8:dd92:1001:24ed:6fff:fe0b:f2d/64
+    > 
     >
     > ```
 
     > ##### Challenge 1.5
     > What is the IPv6-network address (prefix) announced by the Router? Explain how you can identify this address?
     > ```
-    >
+    > The prefix is 2001:16d8:dd92:1001::/64 and is advertised in the Router Advertisement message broadcasted to all hosts from the router. This message is the responds to the Router solicitation message broadcasted to routers from node-1.
     >
     >
     > ```
@@ -225,9 +227,9 @@ We now have a node on the network which acts as an IPv6 router. Next step is to 
     > ##### Challenge 1.6
     > Briefly explain the ICMPv6 packets capture by Wireshark. You can ignore packets destined for ff02::16.
     > ```
+    > Node-1 broadcasts a Router Solicitation message to all routers with its MAC address. Router-1 responds with a Router Advertisement message with the network prefix and its MAC address.
     >
-    >
-    >
+    > 
     >
     >
     >
@@ -244,7 +246,7 @@ We now have a node on the network which acts as an IPv6 router. Next step is to 
     > ##### Challenge 1.7
     > Briefly explain the ICMPv6 packets exchanged.
     > ```
-    >
+    > Node-1 sends a Neighbor Solicitation message to Router-1 with its MAC address using the solicited-node multicast address of the router. Router-1 responds with a Neighbor Advertisement message with its MAC address that can be used to send the ping messages. Afterwards, a Neighbor Solicitation message is send from router-1 to node-1 with a subsequent responds from node-1 with a Neighbor Advertisement. This happens a couple of times in both directions. We cannot explain why this happens after the ping messages have already been sent.
     >
     >
     >
@@ -273,13 +275,13 @@ An example:
    > ##### Challenge 1.8
    > Calculate the global unicast IPv6 address from the MAC-address and the prefix which the router is configured for.
    > ```
-   > MAC:
+   > MAC: 92:a6:c6:b6:bd:b8
    >
-   > Network Prefix:
+   > Network Prefix: 2001:16d8:dd92:1001::/64
    >
-   > EUI-64:
+   > EUI-64: 90:a6:c6:ff:fe:b6:bd:b8
    >
-   > Global Unicast:
+   > Global Unicast: 2001:16d8:dd92:1001:90a6:c6ff:feb6:bdb8
    >
    > ```
 
